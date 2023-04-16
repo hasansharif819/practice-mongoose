@@ -1,7 +1,7 @@
 const Products = require('../models/Products');
 
-exports.getProductsServices = async(limit) => {
-    const products = await Products.find({}).limit(+limit); //all products
+// exports.getProductsServices = async(limit) => {
+    // const products = await Products.find({}).limit(+limit); //all products
         // const products = await Products.find({ status: { $ne: 'out-of-stock'} }); //not equal
         // const products = await Products.find({ _id: '6429b5b7a297eaa7d388c7a7', name: 'Lehenga'}) //And condition
         // const products = await Products.find({ $or: [{ _id: '6429b5b7a297eaa7d388c7a7', name: 'Lehenga'}]}) //or condition
@@ -34,7 +34,20 @@ exports.getProductsServices = async(limit) => {
        
         //important notes --> please check find and findById with undefined value
         // const product = await Products.findById(undefined)
-    return products;
+    // return products;
+// }
+
+//Get products by query from the req.query
+exports.getProductsServices = async (queryData, queries) => {
+    const { fields, sortBy} = queries;
+    if (queryData) {
+        const products = await Products.find(queryData).select(fields).sort(sortBy);
+        return products;
+    }
+    else {
+        const products = await Products.find({}).select(queries.fields).sort(queries.sortBy);
+        return products;
+    }
 }
 
 exports.createProductsServices = async (data) => {
@@ -77,6 +90,9 @@ exports.bulkUpdateProductsServicesById = async (data) => {
 //Bulk delete products ById with deletemany keyword
 exports.bulkDeleteProductsServicesById = async (ids) => {
     const result = await Products.deleteMany({ _id: ids });
+
+    //This command delete all the data at a time. So be carefull to use this.
+    // const result = await Products.deleteMany({});
     return result;
 }
 

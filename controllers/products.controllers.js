@@ -10,13 +10,49 @@ module.exports.getProducts = async (req, res, next) => {
         //sometimes we need to pass parameter then getProductsServices theke
         // limit ta k parameter hisebe niye nite hobe (limit)
 
-        const products = await getProductsServices(req.query.limit);
+        // const products = await getProductsServices(req.query.limit);
 
-        res.status(200).json({
+        
+        //Query parameters for query by req.query
+        const queryData = {...req.query};
+        
+        //Sort, page, limit, etc. egula k exclude kore nite hobe query Data theke.
+        const excludesFields = ["page", "limit", "sort", "fields"];
+        excludesFields.forEach(field => delete queryData[field]);
+
+        // console.log("req.query, original query = ", req.query);
+        // console.log("queryData, new query = ", queryData);
+
+        const queries = {};
+
+        if (req.query.sort) {
+            const sortBy = req.query.sort.split(',').join(' ');
+            queries.sortBy = sortBy;
+        }
+
+        if (req.query.fields) {
+            const fieldsBy = req.query.fields.split(',').join(' ');
+            queries.fields = fieldsBy;
+        }
+
+        if (queryData) {
+            const products = await getProductsServices(queryData, queries);
+            
+            res.status(200).json({
             status: 'success',
-            message: "Data is successfull!!!",
+            message: "Query is successfull!!!",
             data: products
         })
+        }
+        else {
+            const products = await getProductsServices(queries);
+            
+            res.status(200).json({
+                status: 'success',
+                message: "Data is successfull!!!",
+                data: products
+            })
+        }
 
     } catch (error) {
         res.status(400).json({
