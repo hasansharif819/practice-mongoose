@@ -64,6 +64,17 @@ module.exports.getProducts = async (req, res, next) => {
     next();
 }
 
+//get a single product
+// module.exports.productsID = async(req, res, next) => {
+//     try {
+//         const {id} = req.params;
+//         const filter = products.find(product => product.id === Number(id));
+//         res.send(filter);
+//     } catch (error) {
+        
+//     }
+// }
+
 module.exports.createProduct = async (req, res, next) => {
     try {
         //save / create new data
@@ -179,6 +190,25 @@ module.exports.deletedProductById = async (req, res, next) => {
         res.status(400).json({
             status: "failed",
             message: "Sorry!!! product is not deleted... Please try again later",
+            error: error.message
+        })
+    }
+}
+
+//find one product by id
+module.exports.findProductById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const product = await findoneProductByIdServices(id);
+        res.status(200).json({
+            status: 'success',
+            message: `Successfully found the product by id ${ id } !!!`,
+            data: product
+        })
+    } catch (error) {
+        res.status(400).json({
+            status: "failed",
+            message: "Sorry!!! product is not found... Please try again later",
             error: error.message
         })
     }

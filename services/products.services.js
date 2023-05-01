@@ -49,12 +49,13 @@ exports.getProductsServices = async (queryData, queries) => {
         return products;
     }
 }
-
+//creating a new product by post method
 exports.createProductsServices = async (data) => {
     const product = await Products.create(data);
     return product;
 }
 
+//update a existing product by productId
 exports.updateProductsServicesById = async (productId, data) => {
     // const product = await Products.updateOne({ _id: productId }, {$set: data}, { runValidators: true });
 
@@ -96,6 +97,7 @@ exports.bulkDeleteProductsServicesById = async (ids) => {
     return result;
 }
 
+//delete a product
 exports.deletedProductByIdServices = async (id) => {
     const result = await Products.deleteOne({ _id: id });
     return result;

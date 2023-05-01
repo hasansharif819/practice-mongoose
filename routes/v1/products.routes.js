@@ -67,7 +67,8 @@ router
         //dynmic id same route a sobar niche dite hobe 
         //coz dynamic route upore chole asle tokhn amader 
         //bulk - route ta dynamic id hisebe treate kore
-    router.route('/:id')
+router.route('/:id')
+        .get(productsController.findProductById)
         .patch(productsController.updateProductById)
         .delete(productsController.deletedProductById)
 
