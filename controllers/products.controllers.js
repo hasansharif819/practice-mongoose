@@ -14,7 +14,7 @@ module.exports.getProducts = async (req, res, next) => {
 
         
         //Query parameters for query by req.query
-        const queryData = {...req.query};
+        let queryData = {...req.query};
         
         //Sort, page, limit, etc. egula k exclude kore nite hobe query Data theke.
         const excludesFields = ["page", "limit", "sort", "fields"];
@@ -24,6 +24,19 @@ module.exports.getProducts = async (req, res, next) => {
         // console.log("queryData, new query = ", queryData);
 
         const queries = {};
+
+        //grater than, less than, grater than or equal, etc. eigular jonno 
+        //client side theke req.query te request pathano hoy like
+        //http://localhost:5000/api/v1/products?price[gt]=50
+        //bracket er vitorer data gulo object hisebe provide kore sathe $(doller) sign
+        //ta dey na... sei jonno amader k replace kore and regex use kore amdr
+        //requirement fullfill korete hoy
+        
+        //gt || lt || gte || lte
+        const queryDataString = JSON.stringify(queryData);
+        const replacingQueryData = queryDataString.replace(/\b(gt|lt|gte|lte)\b/g, match => `$${match}`); //regex
+        queryData = JSON.parse(replacingQueryData);
+        // console.log(parsedQueryData);
 
         if (req.query.sort) {
             const sortBy = req.query.sort.split(',').join(' ');
@@ -43,6 +56,7 @@ module.exports.getProducts = async (req, res, next) => {
             message: "Query is successfull!!!",
             data: products
         })
+            // res.send({ success: true, products });
         }
         else {
             const products = await getProductsServices(queries);
