@@ -40,14 +40,20 @@ const Products = require('../models/Products');
 //Get products by query from the req.query
 exports.getProductsServices = async (queryData, queries) => {
     const { fields, sortBy} = queries;
-    if (queryData) {
-        const products = await Products.find(queryData).select(fields).sort(sortBy);
-        return products;
-    }
-    else {
-        const products = await Products.find({}).select(queries.fields).sort(queries.sortBy);
-        return products;
-    }
+    // if (queryData) {
+        const products = await Products.find(queryData)
+            .skip(queries.skip)
+            .limit(queries.limit)
+            .select(fields)
+            .sort(sortBy);
+        const total = await Products.countDocuments(queryData);
+        const page = Math.ceil(total / queries.limit);
+        return {total, page, products};
+    // }
+    // else {
+    //     const products = await Products.find({}).select(queries.fields).sort(queries.sortBy);
+    //     return products;
+    // }
 }
 //creating a new product by post method
 exports.createProductsServices = async (data) => {

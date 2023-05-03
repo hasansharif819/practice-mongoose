@@ -48,6 +48,16 @@ module.exports.getProducts = async (req, res, next) => {
             queries.fields = fieldsBy;
         }
 
+        if (req.query.page) {
+            // const pageBy = req.query.page.split(',').join(' ');
+            // queries.page = pageBy;
+
+            const { page = 1, limit = 10 } = req.query;
+            const skip = (page - 1) * parseInt(limit);
+            queries.skip = skip;
+            queries.limit = parseInt(limit);
+        }
+
         if (queryData) {
             const products = await getProductsServices(queryData, queries);
             
