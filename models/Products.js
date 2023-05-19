@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Schema.Types;
 
 //Schema ==> Model ==> Query
 
@@ -16,11 +17,16 @@ const productSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    price: {
-        type: Number,
-        required: true,
-        min: [0, "Price can't be negative."]
-    },
+    
+    //Product schema te price and quantuty hobe na
+    //coz amader product ta different zone a
+    //price and quantity vary korte pare
+    // price: {
+    //     type: Number,
+    //     required: true,
+    //     min: [0, "Price can't be negative."]
+    // },
+    
     unit: {
         type: String,
         required: true,
@@ -48,31 +54,38 @@ const productSchema = mongoose.Schema({
             message: "Please provide valid image urls"
         }
     },
-    quantity: [{
-        type: Number,
-        required: true,
-        min: [0, "Quantity can't be negative"],
-        validate: {
-            validator: (value) => {
-                const isInteger = Number.isInteger(value);
-                if (isInteger) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        },
-        message: "Quantity must be an integer"
-    }],
-    status: {
-        type: String,
-        required: true,
-        enum: {
-            values: ["in-stock", "out-of-stock", "discontinue"],
-            message: "Status can't be {VALUE}, it must be like in-stock / out-of-stock / discontinue"
-        }
-    },
+
+    //Product ta independent rakhte hobe.
+    //Different zone a different price and quantity
+    //thakte pare. Sei jonno product aa price and quantity rakha jabe na.
+    // quantity: [{
+    //     type: Number,
+    //     required: true,
+    //     min: [0, "Quantity can't be negative"],
+    //     validate: {
+    //         validator: (value) => {
+    //             const isInteger = Number.isInteger(value);
+    //             if (isInteger) {
+    //                 return true;
+    //             }
+    //             else {
+    //                 return false;
+    //             }
+    //         }
+    //     },
+    //     message: "Quantity must be an integer"
+    // }],
+
+    //Status ta oo zone to zone vary korbe 
+    //Sei jonno status ta independent rakha jabe na
+    // status: {
+    //     type: String,
+    //     required: true,
+    //     enum: {
+    //         values: ["in-stock", "out-of-stock", "discontinue"],
+    //         message: "Status can't be {VALUE}, it must be like in-stock / out-of-stock / discontinue"
+    //     }
+    // },
     location: {
         type: String,
         required: [true, "Location can't be empty"]
@@ -122,19 +135,24 @@ const productSchema = mongoose.Schema({
 
 //Mongoose middleware pre and post method for data saving
 //pre middleware
-productSchema.pre('save', function (next) {
+
+//Jehetu amader product model ta independent
+//Product model a price or quantity thakteche na sehetu amder 
+//eikhane pre middleware or post middleware dorkar neii
+
+// productSchema.pre('save', function (next) {
     //this keyword refers the doc
     //this doc is coming from user by req.body
     //
     //instance creation ==> Do something ==> save();
-    if (this.quantity == 0) {
-        this.status = 'out-of-stock'
-    }
-    if (this.price <= 10) {
-        this.status = 'discontinue'
-    }
-    next();
-})
+//     if (this.quantity == 0) {
+//         this.status = 'out-of-stock'
+//     }
+//     if (this.price <= 10) {
+//         this.status = 'discontinue'
+//     }
+//     next();
+// })
 
 //mongoose post middleware
 // productSchema.post('save', function (doc, next) {
