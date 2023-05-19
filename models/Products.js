@@ -25,14 +25,33 @@ const productSchema = mongoose.Schema({
         type: String,
         required: true,
         enum: {
-            values: ["kg", "litre", "pcs"],
-            message: "Unit value can't be {VALUE}, it must be kg / litre / pcs"
+            values: ["kg", "litre", "pcs", "bags"],
+            message: "Unit value can't be {VALUE}, it must be kg / litre / pcs / bags"
         }
     },
-    quantity: {
+    imageURLs: {
+        type: String,
+        required: true,
+        validate: {
+            validator: (value) => {
+                if (!Array.isArray(value)){
+                    return false;
+                }
+                isValid = true;
+                value.forEach(url => {
+                    if (!validator.isURL(url)) {
+                        isValid = false;
+                    }
+                })
+                return isValid;
+            },
+            message: "Please provide valid image urls"
+        }
+    },
+    quantity: [{
         type: Number,
         required: true,
-        min: [0, "Quantuty can't be negative"],
+        min: [0, "Quantity can't be negative"],
         validate: {
             validator: (value) => {
                 const isInteger = Number.isInteger(value);
@@ -45,7 +64,7 @@ const productSchema = mongoose.Schema({
             }
         },
         message: "Quantity must be an integer"
-    },
+    }],
     status: {
         type: String,
         required: true,
@@ -61,6 +80,17 @@ const productSchema = mongoose.Schema({
     category: {
         type: String,
         required: [true, "Category can't be empty"]
+    },
+    brand: {
+        name: {
+            type: String,
+            required: true
+        },
+        id: {
+            type: ObjectId,
+            ref: "Brand",
+            required: true
+        }
     },
     //reference data
     supplier: {
@@ -113,9 +143,9 @@ productSchema.pre('save', function (next) {
 // })
 
 //mongoose instant / inostant
-productSchema.methods.logger = function () {
-    console.log(`Data saved for the ${this.name}`)
-}
+// productSchema.methods.logger = function () {
+//     console.log(`Data saved for the ${this.name}`)
+// }
 
 //Model
 const Products = mongoose.model('Products', productSchema);
