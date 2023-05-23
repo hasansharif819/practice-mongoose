@@ -73,7 +73,7 @@ module.exports.getProducts = async (req, res, next) => {
             
             res.status(200).json({
                 status: 'success',
-                message: "Data is successfull!!!",
+                message: "Data is successful!!!",
                 data: products
             })
         }

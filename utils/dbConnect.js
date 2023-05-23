@@ -18,7 +18,7 @@ module.exports = {
             if (err || !db) {
                 return callback(err);
             }
-            dbConnection = db.db("DemoServer");
+            dbConnection = db.db("test");
             console.log("Successfully connect the database".yellow.bold);
 
             return callback();

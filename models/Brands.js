@@ -9,7 +9,8 @@ const brandSchema = mongoose.Schema({
         required: [true, "Please provide a brand name"],
         maxLength: 100,
         unique: true,
-        lowercase: true
+        // lowercase: true
+        uppercase: true
     },
     description: String,
     email: {
@@ -45,6 +46,6 @@ const brandSchema = mongoose.Schema({
     timestamps: true
 })
 
-const Brand = mongoose.model("Brand", brandSchema)
+const Brands = mongoose.model("Brand", brandSchema)
 
-exports = Brand;
+module.exports = Brands;
