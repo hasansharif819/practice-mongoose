@@ -35,25 +35,25 @@ const productSchema = mongoose.Schema({
             message: "Unit value can't be {VALUE}, it must be kg / litre / pcs / bags"
         }
     },
-    imageURLs: {
-        type: String,
-        required: true,
-        validate: {
-            validator: (value) => {
-                if (!Array.isArray(value)){
-                    return false;
-                }
-                isValid = true;
-                value.forEach(url => {
-                    if (!validator.isURL(url)) {
-                        isValid = false;
-                    }
-                })
-                return isValid;
-            },
-            message: "Please provide valid image urls"
-        }
-    },
+    // imageURLs: {
+    //     type: String,
+    //     required: true,
+    //     validate: {
+    //         validator: (value) => {
+    //             if (!Array.isArray(value)){
+    //                 return false;
+    //             }
+    //             isValid = true;
+    //             value.forEach(url => {
+    //                 if (!validator.isURL(url)) {
+    //                     isValid = false;
+    //                 }
+    //             })
+    //             return isValid;
+    //         },
+    //         message: "Please provide valid image urls"
+    //     }
+    // },
 
     //Product ta independent rakhte hobe.
     //Different zone a different price and quantity
@@ -106,10 +106,10 @@ const productSchema = mongoose.Schema({
         }
     },
     //reference data
-    supplier: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Supplier"
-    },
+    // supplier: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Supplier"
+    // },
     //embed data
     // categories: [{
     //     name: {

@@ -11,10 +11,10 @@ const categorySchema = mongoose.Schema({
         maxLength: 100
     },
     description: String,
-    imageUrl: {
-        type: String,
-        validate: [validator.isURL, "Please provide a valid URL"]
-    }
+    // imageUrl: {
+    //     type: String,
+    //     validate: [validator.isURL, "Please provide a valid URL"]
+    // }
 },
 {
     timestamps: true
@@ -22,4 +22,4 @@ const categorySchema = mongoose.Schema({
 
 const Category = mongoose.model("Category", categorySchema);
 
-exports = Category;
+module.exports = Category;

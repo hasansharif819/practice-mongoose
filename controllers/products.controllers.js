@@ -105,11 +105,11 @@ module.exports.createProduct = async (req, res, next) => {
         // const product = new Products(req.body);
         const result = await createProductsServices(req.body);
 
-        result.logger();
+        // result.logger();
 
         res.status(200).json({
             status: 'success',
-            message: "Data is successfull inserted!!!",
+            message: "Data is successfully inserted!!!",
             data: result
         })
     } catch (error) {

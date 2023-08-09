@@ -11,7 +11,8 @@ exports.createBrand = async (req, res, next) => {
     } catch (error) {
         res.status(400).json({
             status: "Failed",
-            error: "Couldn't create the brand. Please try again later!!!"
+            error: "Couldn't create the brand. Please try again later!!!",
+            error: error.message
         })
     }
 }
@@ -27,7 +28,7 @@ exports.getBrands = async (req, res, next) => {
         res.status(400).json({
             status: "Failed",
             message: "Couldn't get the brands. Please try again later!!!",
-            error: error
+            error: error.message
         })
     }
 }
@@ -39,7 +40,8 @@ exports.getBrandById = async (req, res, next) => {
         if (!brand) {
             res.status(400).json({
                 status: "Failed",
-                error: "Couldn't find the brands with this id"
+                error: "Couldn't find the brands with this id",
+                error: error.message
             })
         }
         res.status(200).json({
@@ -50,7 +52,7 @@ exports.getBrandById = async (req, res, next) => {
         res.status(400).json({
             status: "Failed",
             message: "Couldn't get the targeted brand. Please try again later!!!",
-            error: error
+            error: error.message
         })
     }
 }
@@ -63,7 +65,8 @@ exports.updateBrandById = async (req, res, next) => {
         if (!result.modifiedCount) {
             res.status(400).json({
                 status: "Failed",
-                error: `Couldn't update the brands with this ${id}`
+                error: `Couldn't update the brands with this ${id}`,
+                error: error.message
             })
         }
         res.status(200).json({

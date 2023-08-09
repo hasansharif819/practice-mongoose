@@ -1,4 +1,5 @@
 const Products = require('../models/Products');
+const Brand = require('../models/Brands');
 
 // exports.getProductsServices = async(limit) => {
     // const products = await Products.find({}).limit(+limit); //all products
@@ -58,6 +59,15 @@ exports.getProductsServices = async (queryData, queries) => {
 //creating a new product by post method
 exports.createProductsServices = async (data) => {
     const product = await Products.create(data);
+
+    const { _id: productId, brand } = product;
+
+    const result = await Brand.updateOne(
+        { _id: brand.id },
+        {$push: {products: productId}}
+    )
+
+    // console.log(result);
     return product;
 }
 

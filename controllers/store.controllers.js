@@ -17,7 +17,8 @@ exports.createStore = async (req, res, next) => {
     catch (error) {
         res.status(400).json({
             status: "Failed",
-            message: "Sorry!!! Store couldn't created. Please try again later!!!"
+            message: "Sorry!!! Store couldn't created. Please try again later!!!",
+            error: error.message
         })
     }
 }
@@ -34,7 +35,8 @@ exports.getStores = async (req, res, next) => {
     catch (error) {
         res.status(400).json({
             status: "Failed",
-            message: "Sorry, couldn't get the stores!!!"
+            message: "Sorry, couldn't get the stores!!!",
+            error: error.message
         })
     }
 }
@@ -46,7 +48,8 @@ exports.getStoreById = async (req, res, next) => {
         if (!store) {
             res.status(400).json({
                 status: "Failed",
-                message: `Sorry, No store found for this $${id}`
+                message: `Sorry, No store found for this $${id}`,
+                error: error.message
             })
         }
         res.status(200).json({
@@ -57,7 +60,8 @@ exports.getStoreById = async (req, res, next) => {
     } catch (error) {
         res.status(400).json({
             status: "Failed",
-            message: "Sorry, couldn't get the targeted store!!!"
+            message: "Sorry, couldn't get the targeted store!!!",
+            error: error.message
         })
     }
 }
@@ -70,7 +74,8 @@ exports.updateStoreById = async (req, res, next) => {
         if (!result.modifiedCount) {
             res.status(400).json({
                 status: "Failed",
-                message: `Sorry for updating with this ${id}`
+                message: `Sorry for updating with this ${id}`,
+                error: error.message
             })
         }
         res.status(200).json({
@@ -81,7 +86,8 @@ exports.updateStoreById = async (req, res, next) => {
     catch (error) {
         res.status(400).json({
             status: "Failed",
-            message: `Sorry for updating this ${id}... Please try again later...`
+            message: `Sorry for updating this ${id}... Please try again later...`,
+            error: error.message
         })
     }
 }

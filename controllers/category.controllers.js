@@ -15,10 +15,12 @@ exports.createCategory = async (req, res, next) => {
         })
         
     }
+    
     catch (error) {
         res.status(400).json({
             status: "Failed",
-            message: "Sorry!!! Category couldn't created. Please try again later!!!"
+            message: "Sorry!!! Your New category couldn't created. Please try again later!!!",
+            error: error.message
         })
         
     }
@@ -37,7 +39,8 @@ exports.getCategory = async (req, res, next) => {
     catch (error) {
         res.status(400).json({
             status: "Failed",
-            message: "Sorry, couldn't get the category!!!"
+            message: "Sorry, couldn't get the category!!!",
+            error: error.message
         })
         
     }
@@ -50,7 +53,8 @@ exports.getCategoryById = async (req, res, next) => {
         if (!category) {
             res.status(400).json({
                 status: "Failed",
-                message: `Sorry, No category found for this $${id}`
+                message: `Sorry, No category found for this $${id}`,
+                error: error.message
             })
         }
         res.status(200).json({
@@ -61,7 +65,8 @@ exports.getCategoryById = async (req, res, next) => {
     } catch (error) {
         res.status(400).json({
             status: "Failed",
-            message: "Sorry, couldn't get the targeted category!!!"
+            message: "Sorry, couldn't get the targeted category!!!",
+            error: error.message
         })
         
     }
@@ -75,7 +80,8 @@ exports.updateCategoryById = async (req, res, next) => {
         if (!result.modifiedCount) {
             res.status(400).json({
                 status: "Failed",
-                message: `Sorry for updating with this ${id}`
+                message: `Sorry for updating with this ${id}`,
+                error: error.message
             })
         }
         res.status(200).json({
@@ -87,7 +93,8 @@ exports.updateCategoryById = async (req, res, next) => {
     catch (error) {
         res.status(400).json({
             status: "Failed",
-            message: `Sorry for updating this ${id}... Please try again later...`
+            message: `Sorry for updating this ${id}... Please try again later...`,
+            error: error.message
         })
     }
 }
