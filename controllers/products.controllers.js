@@ -237,3 +237,22 @@ module.exports.findProductById = async (req, res, next) => {
         })
     }
 }
+
+/** file upload */
+exports.fileUpload = (req, res) => {
+    try {
+        // res.status(200).json(req.file)
+        /**
+         * for multiple file upload
+         */
+        res.status(200).json(req.files)
+        
+    } catch (error) {
+        res.status(400).json({
+            status: "failed",
+            message: "Sorry!!! file not update... Please try again later",
+            error: error.message
+        })
+        
+    }
+}

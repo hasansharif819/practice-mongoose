@@ -61,6 +61,8 @@ exports.createProductsServices = async (data) => {
     const product = await Products.create(data);
 
     const { _id: productId, brand } = product;
+    console.log("brand_id: ", brand.id);
+    console.log("product_id: ", productId);
 
     const result = await Brand.updateOne(
         { _id: brand.id },

@@ -1,6 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const productsController = require('../../controllers/products.controllers');
+const uploader = require("../../middleware/uploader");
+
+// router.post("/file-upload", uploader.single("image"), productsController.fileUpload);
+//for multiple file uploader
+router.post("/file-upload", uploader.array("image"), productsController.fileUpload);
+
+/** {for front-end}
+ * input type= "file", name="image" 
+ * const formData = new FormData();
+ * formData.append("image", formData)
+*/
 
 router
     .route('/')
