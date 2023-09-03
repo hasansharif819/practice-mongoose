@@ -9,7 +9,7 @@ const stockSchema = mongoose.Schema({
     productId: {
         type: ObjectId,
         required: true,
-        ref: "Product"
+        ref: "Products"
     },
     name: {
         type: String,

@@ -8,10 +8,10 @@ const storeSchema = mongoose.Schema({
         trim: true,
         required: [true, "Please provide a store name"],
         lowercase: true,
-        // enum: {
-        //     values: ["Dhaka", "Chittagong", "Rajshahi", "Khulna", "Borishal", "Sylhet", "Rangpur", "Mymensing"],
-        //     message: "{VALUE} is not a valid name"
-        // }
+        enum: {
+            values: ["Dhaka", "Chittagong", "Rajshahi", "Khulna", "Borishal", "Sylhet", "Rangpur", "Mymensing"],
+            message: "{VALUE} is not a valid name"
+        }
     },
     description: String,
     status: {
@@ -24,7 +24,7 @@ const storeSchema = mongoose.Schema({
         contactNumber: String,
         id: {
             type: ObjectId,
-            ref: "User"
+            ref: "Supplier"
         }
     }
 },
@@ -32,6 +32,6 @@ const storeSchema = mongoose.Schema({
     timestamps: true
 })
 
-const Store = mongoose.model("Store", storeSchema);
+const store = mongoose.model("Store", storeSchema);
 
-module.exports = Store;
+module.exports = store;

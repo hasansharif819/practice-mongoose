@@ -39,7 +39,7 @@ const Brand = require('../models/Brands');
 // }
 
 //Get stocks by query from the req.query
-exports.getStocksSeStock= async (queryData, queries) => {
+exports.getStocksServices= async (queryData, queries) => {
     const { fields, sortBy} = queries;
     // if (queryData) {
         const stocks = await Stocks.find(queryData)
@@ -123,6 +123,9 @@ exports.deletedStockByIdServices = async (id) => {
 
 //find one
 exports.findOneStockByIdServices = async (stockId) => {
-    const stock = await Stocks.findById(stockId);
+    const stock = await Stocks.findById(stockId)
+        .populate("brand.id")
+        .populate("suppliedBy.id")
+        .populate("productId");
     return stock;
 }
