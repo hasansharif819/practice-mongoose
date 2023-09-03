@@ -1,5 +1,7 @@
 const Stocks = require('../models/Stock');
 const Brand = require('../models/Brands');
+const { default: mongoose } = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 // exports.getstocksServices = async(limit) => {
     // const stocks = await stocks.find({}).limit(+limit); //all stocks
@@ -38,7 +40,12 @@ const Brand = require('../models/Brands');
     // return stocks;
 // }
 
-//Get stocks by query from the req.query
+/**
+ * Niche aggregation funtion kora hoyeche sob gulo stocks er jonno
+ * sei jonno eta comment kore rakhlam
+ */
+
+// Get stocks by query from the req.query
 exports.getStocksServices= async (queryData, queries) => {
     const { fields, sortBy} = queries;
     // if (queryData) {
@@ -56,6 +63,8 @@ exports.getStocksServices= async (queryData, queries) => {
     //     return stocks;
     // }
 }
+
+
 //creating a new stock by post method
 exports.createStocksServices = async (data) => {
     const stock = await Stocks.create(data);
@@ -122,10 +131,76 @@ exports.deletedStockByIdServices = async (id) => {
 }
 
 //find one
+//it is commented because of aggregation for single stock
+
+// exports.findOneStockByIdServices = async (stockId) => {
+//     const stock = await Stocks.findById(stockId)
+//         .populate("brand.id")
+//         .populate("suppliedBy.id")
+//         .populate("productId");
+//     return stock;
+// }
+
+// using aggregation 
+
+//Need more explore of aggregation
+// exports.getStocksServices = async (queryData, queries) => {
+//     const stock = await Stocks.aggregate([
+//         // { $match: { 'store.name': 'dhaka' }},
+//         { $match: {} },
+//         {
+//             $project: {
+//                 store: 1,
+//                 quantity: 1,
+//                 price: { $convert: { input: '$price', to: 'int'}}
+//             }
+//         },
+//         {
+//             $group: {
+//                 _id: '$store.name',
+//                 totalProductsPrice: {
+//                     $sum: {
+//                         $multiply:
+//                             ['$price', '$quantity']
+//                     }
+//                 }
+//             }
+//         }
+//     ])
+//     return stock;
+// }
+
+
 exports.findOneStockByIdServices = async (stockId) => {
-    const stock = await Stocks.findById(stockId)
-        .populate("brand.id")
-        .populate("suppliedBy.id")
-        .populate("productId");
+    const stock = await Stocks.aggregate([
+
+        //stage 1
+        { $match: { _id: new ObjectId(stockId) } },
+        //project kore amar jei jei field er value gulo dorkar oigula niye nilam.
+        // 1 diye ney && 0 diye baad dey
+        {
+            $project: {
+                category: 1,
+                quantity: 1,
+                price: 1,
+                productId: 1,
+                name: 1,
+                "brand.name": {$toLower: '$brand.name'}
+            }
+        },
+
+        //lookup kore brands collection theke brand er name diye oi brand k 
+        //aggregate kora hocche rr details gulo brandDetails field aa rakha 
+        //hocche
+        {
+            $lookup:{
+                from: "brands",
+                localField: "brand.name",
+                foreignField: "name",
+                as: "brandDetails"
+            }
+        },
+    ])
+    
     return stock;
 }

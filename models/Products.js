@@ -107,11 +107,22 @@ const productSchema = mongoose.Schema({
             required: true
         }
     },
-    //reference data
     supplier: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Supplier"
+        name: {
+            type: String,
+            required: true
+        },
+        id: {
+            type: ObjectId,
+            ref: "Supplier",
+            required: true
+        }
     },
+    //reference data
+    // supplier: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Supplier"
+    // },
     //embed data
     // categories: [{
     //     name: {
