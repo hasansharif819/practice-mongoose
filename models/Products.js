@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Schema.Types;
+const validator = require("validator");
 
 //Schema ==> Model ==> Query
 
@@ -38,6 +39,7 @@ const productSchema = mongoose.Schema({
     imageURLs: {
         type: String,
         required: true,
+        validate: [validator.isURL, "Please provide  a valid image urls"],
         // validate: {
         //     validator: (value) => {
         //         if (!Array.isArray(value)){
@@ -106,10 +108,10 @@ const productSchema = mongoose.Schema({
         }
     },
     //reference data
-    // supplier: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Supplier"
-    // },
+    supplier: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Supplier"
+    },
     //embed data
     // categories: [{
     //     name: {

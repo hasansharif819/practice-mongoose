@@ -4,10 +4,10 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const brandSchema = mongoose.Schema({
 
-    products: [{
-        type: ObjectId,
-        ref: "Product"
-    }],
+    // products: [{
+    //     type: ObjectId,
+    //     ref: "Products"
+    // }],
     
     name: {
         type: String,
@@ -21,7 +21,7 @@ const brandSchema = mongoose.Schema({
     description: String,
     email: {
         type: String,
-        validate: [validator.isEmail, "Please provede a valid email"],
+        validate: [validator.isEmail, "Please provide a valid email"],
         lowercase: true
     },
     website: {
@@ -43,6 +43,19 @@ const brandSchema = mongoose.Schema({
         type: String,
         enum: ["active", "inactive"],
         default: "active"
+    },
+
+    products: {
+        name: {
+            type: String,
+            trim: true,
+            required: true
+        },
+        id: {
+            type: ObjectId,
+            required: true,
+            ref: "Product"
+        }
     },
 },
     {

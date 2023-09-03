@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const validator = require("validator");
 const { ObjectId } = mongoose.Schema.Types;
 
 //Schema ==> Model ==> Query
@@ -14,7 +15,7 @@ const stockSchema = mongoose.Schema({
         type: String,
         required: [true, "Please provide the product name"],
         trim: true,
-        unique: [true, "Name must be unique"],
+        // unique: [true, "Name must be unique"],
         minLength: [3, "Name should be at-least 3 characters."],
         maxLength: [50, "Name is too large"]
     },
@@ -38,21 +39,22 @@ const stockSchema = mongoose.Schema({
     imageURLs: {
         type: String,
         required: true,
-        validate: {
-            validator: (value) => {
-                if (!Array.isArray(value)){
-                    return false;
-                }
-                isValid = true;
-                value.forEach(url => {
-                    if (!validator.isURL(url)) {
-                        isValid = false;
-                    }
-                })
-                return isValid;
-            },
-            message: "Please provide valid image urls"
-        }
+        validate: [validator.isURL, "Please provide  a valid image urls"],
+        // validate: {
+        //     validator: (value) => {
+        //         if (!Array.isArray(value)){
+        //             return false;
+        //         }
+        //         isValid = true;
+        //         value.forEach(url => {
+        //             if (!validator.isURL(url)) {
+        //                 isValid = false;
+        //             }
+        //         })
+        //         return isValid;
+        //     },
+        //     message: "Please provide valid image urls"
+        // }
     },
     quantity: [{
         type: Number,
@@ -79,23 +81,42 @@ const stockSchema = mongoose.Schema({
             message: "Status can't be {VALUE}, it must be like in-stock / out-of-stock / discontinue"
         }
     },
-    store: {
+
+    category: {
+        type: String,
+        required: [true, "Category can't be empty"]
+    },
+
+    brand: {
         name: {
             type: String,
             trim: true,
-            required: [true, "Please provide a store name"],
-            lowercase: true,
-            enum: {
-                values: ["Dhaka", "Chittagong", "Rajshahi", "Khulna", "Barishal", "Sylhet", "Rangpur", "Mymensing"],
-                message: "{VALUE} is not a valid name"
-            }
+            required: [true, "Please provide a brand name"],
+            lowercase: true
         },
         id: {
             type: ObjectId,
             required: true,
-            ref: "Store"
+            ref: "Brand"
         }
     },
+    // store: {
+    //     name: {
+    //         type: String,
+    //         trim: true,
+    //         required: [true, "Please provide a store name"],
+    //         lowercase: true,
+    //         enum: {
+    //             values: ["Dhaka", "Chittagong", "Rajshahi", "Khulna", "Barishal", "Sylhet", "Rangpur", "Mymensing"],
+    //             message: "{VALUE} is not a valid name"
+    //         }
+    //     },
+    //     id: {
+    //         type: ObjectId,
+    //         required: true,
+    //         ref: "Store"
+    //     }
+    // },
 
     suppliedBy: {
         name: {
@@ -116,7 +137,7 @@ const stockSchema = mongoose.Schema({
 
 //Mongoose middleware pre and post method for data saving
 //pre middleware
-productSchema.pre('save', function (next) {
+stockSchema.pre('save', function (next) {
     //this keyword refers the doc
     //this doc is coming from user by req.body
     //
